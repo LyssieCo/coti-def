@@ -53,31 +53,31 @@
 
   <form name="cotizacion-form">
     <div class="producto">
-      <label for="TN1060">Cartucho TN1060</label>
+      <label>Cartucho TN1060</label>
       <input type="number" name="Cartucho TN1060" min="0" value="0" />
     </div>
     <div class="producto">
-      <label for="HP664XK">Cartucho InkJet HP664XK</label>
+      <label>Cartucho InkJet HP664XK</label>
       <input type="number" name="Cartucho InkJet HP664XK" min="0" value="0" />
     </div>
     <div class="producto">
-      <label for="EpsonT296">InkJet Epson T296 (Colores)</label>
+      <label>InkJet Epson T296 (Colores)</label>
       <input type="number" name="InkJet Epson T296 (Colores)" min="0" value="0" />
     </div>
     <div class="producto">
-      <label for="EpsonT297">InkJet Epson T297 (Negro)</label>
+      <label>InkJet Epson T297 (Negro)</label>
       <input type="number" name="InkJet Epson T297 (Negro)" min="0" value="0" />
     </div>
     <div class="producto">
-      <label for="ET664">Botella de tinta ET664 (100ML)</label>
+      <label>Botella de tinta ET664 (100ML)</label>
       <input type="number" name="Botella de tinta ET664 (100ML)" min="0" value="0" />
     </div>
     <div class="producto">
-      <label for="EP250">Botella de tinta EP250 (250ML)</label>
+      <label>Botella de tinta EP250 (250ML)</label>
       <input type="number" name="Botella de tinta EP250 (250ML)" min="0" value="0" />
     </div>
     <div class="producto">
-      <label for="GT51-52">Botella de tinta GT51 y GT52</label>
+      <label>Botella de tinta GT51 y GT52</label>
       <input type="number" name="Botella de tinta GT51 y GT52" min="0" value="0" />
     </div>
 
@@ -100,28 +100,30 @@
   </form>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzHkrthU8X5sf48Lf1IYfqX2_NCXT7pYpMe6v0XrXAhxVgylEQDZJdyOv6ChP13Xgeh/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxC9gcymgG34ApMNNzrtOXh2jP6ae0f6d-ej8dwqfW5k93V3J-D3TKzrlVUSYXxcfMY/exec";
     const form = document.forms["cotizacion-form"];
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const productosSeleccionados = [...document.querySelectorAll('input[type="number"]')]
+      const productosSeleccionados = [...form.querySelectorAll('input[type="number"]')]
         .filter(input => parseInt(input.value) > 0)
         .map(input => `${input.name}: ${input.value}`)
         .join(" | ");
 
       const data = {
-        nombre: form.nombre.value,
-        contacto: form.contacto.value,
-        rubro: form.rubro.value,
+        nombre: form.nombre.value.trim(),
+        contacto: form.contacto.value.trim(),
+        rubro: form.rubro.value.trim(),
         productos: productosSeleccionados
       };
 
       fetch(scriptURL, {
         method: "POST",
         body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" }
+        headers: {
+          "Content-Type": "application/json"
+        }
       })
       .then(() => {
         const mensaje = encodeURIComponent(`Hola, quiero cotizar:\n\n${productosSeleccionados}\n\nNombre: ${data.nombre}\nContacto: ${data.contacto}\nRubro: ${data.rubro}`);
