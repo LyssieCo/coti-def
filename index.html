@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Cotizador GTC</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -53,84 +54,20 @@
 
   <form name="cotizacion-form">
     <div class="producto">
-      <label>Cartucho TN1060</label>
+      <label for="TN1060">Cartucho TN1060</label>
       <input type="number" name="Cartucho TN1060" min="0" value="0" />
     </div>
     <div class="producto">
-      <label>Cartucho InkJet HP664XL</label>
-      <input type="number" name="Cartucho InkJet HP664XL" min="0" value="0" />
+      <label for="HP664XK">Cartucho InkJet HP664XK</label>
+      <input type="number" name="Cartucho InkJet HP664XK" min="0" value="0" />
     </div>
     <div class="producto">
-      <label>InkJet Epson T296 (Colores)</label>
+      <label for="EpsonT296">InkJet Epson T296 (Colores)</label>
       <input type="number" name="InkJet Epson T296 (Colores)" min="0" value="0" />
     </div>
     <div class="producto">
-      <label>InkJet Epson T297 (Negro)</label>
+      <label for="EpsonT297">InkJet Epson T297 (Negro)</label>
       <input type="number" name="InkJet Epson T297 (Negro)" min="0" value="0" />
     </div>
     <div class="producto">
-      <label>Botella de tinta ET664 (100ML)</label>
-      <input type="number" name="Botella de tinta ET664 (100ML)" min="0" value="0" />
-    </div>
-    <div class="producto">
-      <label>Botella de tinta EP250 (250ML)</label>
-      <input type="number" name="Botella de tinta EP250 (250ML)" min="0" value="0" />
-    </div>
-    <div class="producto">
-      <label>Botella de tinta GT51 y GT52</label>
-      <input type="number" name="Botella de tinta GT51 y GT52" min="0" value="0" />
-    </div>
-
-    <div class="formulario">
-      <h3>Datos de contacto</h3>
-      <div>
-        <label for="nombre">Tu nombre o empresa:</label>
-        <input type="text" name="nombre" required />
-      </div>
-      <div>
-        <label for="contacto">Teléfono o email:</label>
-        <input type="text" name="contacto" required />
-      </div>
-      <div>
-        <label for="rubro">Rubro (opcional):</label>
-        <input type="text" name="rubro" />
-      </div>
-      <button type="submit">Enviar cotización</button>
-    </div>
-  </form>
-
-  <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbx_spoqO7zXY3fp8R1cKmnh8ikQqvMd1YuqwYK81Ttcqr1FHRt1ONvMFr4S7IQ4c7ja/exec";
-    const form = document.forms["cotizacion-form"];
-
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const productosSeleccionados = [...form.querySelectorAll('input[type="number"]')]
-        .filter(input => parseInt(input.value) > 0)
-        .map(input => `${input.name}: ${input.value}`)
-        .join(" | ");
-
-      const data = {
-        nombre: form.nombre.value.trim(),
-        contacto: form.contacto.value.trim(),
-        rubro: form.rubro.value.trim(),
-        productos: productosSeleccionados
-      };
-
-      fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      .then(() => {
-        const mensaje = encodeURIComponent(`Hola, quiero cotizar:\n\n${productosSeleccionados}\n\nNombre: ${data.nombre}\nContacto: ${data.contacto}\nRubro: ${data.rubro}`);
-        window.open(`https://wa.me/5491154095537?text=${mensaje}`, "_blank");
-      })
-      .catch((error) => alert("Error al enviar cotización: " + error));
-    });
-  </script>
-</body>
-</html>
+      <label for="ET664">Botella de tinta ET
