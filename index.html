@@ -23,9 +23,8 @@
       display: inline-block;
       width: 300px;
     }
-    input[type="number"], input[type="text"] {
-      width: 200px;
-      padding: 4px;
+    input[type="number"] {
+      width: 60px;
     }
     .formulario {
       margin-top: 30px;
@@ -53,30 +52,58 @@
   <h1>Cotizador de productos</h1>
 
   <form name="cotizacion-form">
-    <div class="producto"><label>Cartucho TN1060</label><input type="number" name="Cartucho TN1060" min="0" value="0" /></div>
-    <div class="producto"><label>Cartucho InkJet HP664XK</label><input type="number" name="Cartucho InkJet HP664XK" min="0" value="0" /></div>
-    <div class="producto"><label>InkJet Epson T296 (Colores)</label><input type="number" name="InkJet Epson T296 (Colores)" min="0" value="0" /></div>
-    <div class="producto"><label>InkJet Epson T297 (Negro)</label><input type="number" name="InkJet Epson T297 (Negro)" min="0" value="0" /></div>
-    <div class="producto"><label>Botella de tinta ET664 (100ML)</label><input type="number" name="Botella de tinta ET664 (100ML)" min="0" value="0" /></div>
-    <div class="producto"><label>Botella de tinta EP250 (250ML)</label><input type="number" name="Botella de tinta EP250 (250ML)" min="0" value="0" /></div>
-    <div class="producto"><label>Botella de tinta GT51</label><input type="number" name="Botella de tinta GT51" min="0" value="0" /></div>
-    <div class="producto"><label>Botella de tinta GT52</label><input type="number" name="Botella de tinta GT52" min="0" value="0" /></div>
+    <div class="producto">
+      <label for="TN1060">Cartucho TN1060</label>
+      <input type="number" name="Cartucho TN1060" min="0" value="0" />
+    </div>
+    <div class="producto">
+      <label for="HP664XK">Cartucho InkJet HP664XK</label>
+      <input type="number" name="Cartucho InkJet HP664XK" min="0" value="0" />
+    </div>
+    <div class="producto">
+      <label for="EpsonT296">InkJet Epson T296 (Colores)</label>
+      <input type="number" name="InkJet Epson T296 (Colores)" min="0" value="0" />
+    </div>
+    <div class="producto">
+      <label for="EpsonT297">InkJet Epson T297 (Negro)</label>
+      <input type="number" name="InkJet Epson T297 (Negro)" min="0" value="0" />
+    </div>
+    <div class="producto">
+      <label for="ET664">Botella de tinta ET664 (100ML)</label>
+      <input type="number" name="Botella de tinta ET664 (100ML)" min="0" value="0" />
+    </div>
+    <div class="producto">
+      <label for="EP250">Botella de tinta EP250 (250ML)</label>
+      <input type="number" name="Botella de tinta EP250 (250ML)" min="0" value="0" />
+    </div>
+    <div class="producto">
+      <label for="GT51-52">Botella de tinta GT51 y GT52</label>
+      <input type="number" name="Botella de tinta GT51 y GT52" min="0" value="0" />
+    </div>
 
     <div class="formulario">
       <h3>Datos de contacto</h3>
-      <div><label for="nombre">Tu nombre o empresa:</label><input type="text" name="nombre" required /></div>
-      <div><label for="contacto">Teléfono o email:</label><input type="text" name="contacto" required /></div>
-      <div><label for="rubro">Rubro (opcional):</label><input type="text" name="rubro" /></div>
+      <div>
+        <label for="nombre">Tu nombre o empresa:</label>
+        <input type="text" name="nombre" required />
+      </div>
+      <div>
+        <label for="contacto">Teléfono o email:</label>
+        <input type="text" name="contacto" required />
+      </div>
+      <div>
+        <label for="rubro">Rubro (opcional):</label>
+        <input type="text" name="rubro" />
+      </div>
       <button type="submit">Enviar cotización</button>
     </div>
   </form>
 
   <script>
-    const SUPABASE_URL = "https://phnzwimwclcpqosmifke.supabase.co";
-    const SUPABASE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBobnp3aW13Y2xjcHFvc21pZmtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4ODcwMzIsImV4cCI6MjA2NDQ2MzAzMn0.6JLQUs5xEAvJgENp6x22U_0Ui69De6BJMHBpck1XW3Y";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzHkrthU8X5sf48Lf1IYfqX2_NCXT7pYpMe6v0XrXAhxVgylEQDZJdyOv6ChP13Xgeh/exec";
     const form = document.forms["cotizacion-form"];
 
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
 
       const productosSeleccionados = [...document.querySelectorAll('input[type="number"]')]
@@ -85,33 +112,22 @@
         .join(" | ");
 
       const data = {
-        Nombre: form.nombre.value,
-        Contacto: form.contacto.value,
-        Rubro: form.rubro.value,
-        Producto: productosSeleccionados
+        nombre: form.nombre.value,
+        contacto: form.contacto.value,
+        rubro: form.rubro.value,
+        productos: productosSeleccionados
       };
 
-      const respuesta = await fetch(`${SUPABASE_URL}/rest/v1/Cotización`, {
+      fetch(scriptURL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "apikey": SUPABASE_API_KEY,
-          "Authorization": `Bearer ${SUPABASE_API_KEY}`,
-          "Prefer": "return=representation"
-        },
-        body: JSON.stringify(data)
-      });
-
-      if (respuesta.ok) {
-        const mensaje = encodeURIComponent(
-          `Hola, quiero cotizar:\n\n${productosSeleccionados}\n\nNombre: ${data.Nombre}\nContacto: ${data.Contacto}\nRubro: ${data.Rubro}`
-        );
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(() => {
+        const mensaje = encodeURIComponent(`Hola, quiero cotizar:\n\n${productosSeleccionados}\n\nNombre: ${data.nombre}\nContacto: ${data.contacto}\nRubro: ${data.rubro}`);
         window.open(`https://wa.me/5491154095537?text=${mensaje}`, "_blank");
-        alert("Cotización enviada correctamente.");
-        form.reset();
-      } else {
-        alert("Error al enviar cotización.");
-      }
+      })
+      .catch((error) => alert("Error al enviar cotización: " + error));
     });
   </script>
 </body>
