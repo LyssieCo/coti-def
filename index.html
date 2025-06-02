@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cotizador GTC</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 30px;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #4a148c;
+    }
+    .producto {
+      margin-bottom: 15px;
+    }
+    label {
+      display: inline-block;
+      width: 300px;
+    }
+    input[type="number"] {
+      width: 60px;
+    }
+    .formulario {
+      margin-top: 30px;
+      padding: 15px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    button {
+      background-color: #4a148c;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    button:hover {
+      background-color: #6a1b9a;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cotizador de productos</h1>
+
+  <form name="cotizacion-form">
+    <div class="producto">
+      <label for="TN1060">Cartucho TN1060</label>
+      <input type="number" name="Cartucho TN1060" min="0" value="0" />
+    </div>
+    <div class="producto">
+      <label for="HP664XK">Cartucho InkJet HP664XK</label>
+      <input type="number" name="Cartucho InkJet HP664XK" min="0" value="0" />
+    </div>
+    <div class="producto">
+      <label for="EpsonT296">InkJet Epson T296 (Colores)</label>
+      <input type="number" name="InkJet Epson T296 (Colores)" min="0" value="0" />
+    </div>
+    <div class="producto">
+      <label for="EpsonT297">InkJet Epson T297 (Negro)</label>
+      <input type="number" name="InkJet Epson T297 (Negro)" min="0" value="0" />
+    </div>
+    <div class="producto">
+      <label for="ET664">Botella de tinta ET664 (100ML)</label>
+      <input type="number" name="Botella de tinta ET664 (100ML)" min="0" value="0" />
+    </div>
+    <div class="producto">
+      <label for="EP250">Botella de tinta EP250 (250ML)</label>
+      <input type="number" name="Botella de tinta EP250 (250ML)" min="0" value="0" />
+    </div>
+    <div class="producto">
+      <label for="GT51-52">Botella de tinta GT51 y GT52</label>
+      <input type="number" name="Botella de tinta GT51 y GT52" min="0" value="0" />
+    </div>
+
+    <div class="formulario">
+      <h3>Datos de contacto</h3>
+      <div>
+        <label for="nombre">Tu nombre o empresa:</label>
+        <input type="text" name="nombre" required />
+      </div>
+      <div>
+        <label for="contacto">Teléfono o email:</label>
+        <input type="text" name="contacto" required />
+      </div>
+      <div>
+        <label for="rubro">Rubro (opcional):</label>
+        <input type="text" name="rubro" />
+      </div>
+      <button type="submit">Enviar cotización</button>
+    </div>
+  </form>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbyh2J9xD642MYx6a9B1sSUXUuuQHN4DnQ5pONRSEAxHVCorIS6tomszcK-5gi-MIsE/exec";
+    const form = document.forms["cotizacion-form"];
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const productosSeleccionados = [...document.querySelectorAll('input[type="number"]')]
+        .filter(input => parseInt(input.value) > 0)
+        .map(input => `${input.name}: ${input.value}`)
+        .join(" | ");
+
+      const data = {
+        nombre: form.nombre.value,
+        contacto: form.contacto.value,
+        rubro: form.rubro.value,
+        productos: productosSeleccionados
+      };
+
+      fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(() => {
+        const mensaje = encodeURIComponent(`Hola, quiero cotizar:\n\n${productosSeleccionados}\n\nNombre: ${data.nombre}\nContacto: ${data.contacto}\nRubro: ${data.rubro}`);
+        window.open(`https://wa.me/5491154095537?text=${mensaje}`, "_blank");
+      })
+      .catch((error) => alert("Error al enviar cotización: " + error));
+    });
+  </script>
+</body>
+</html>
